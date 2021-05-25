@@ -36,7 +36,7 @@ class OwnerList(View):
                 if owner.name == dog.owner.name:
                     petList.append({'name': dog.name})
                     petList.append({'age': dog.age})
-            ownerList.append({'petLIst': petList})
+            ownerList.append({'petList': petList})
         
 
         return JsonResponse({'OwnerList': ownerList}, status=200)

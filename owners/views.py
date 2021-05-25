@@ -14,7 +14,7 @@ class OwnerAdd(View):
 
 class DogAdd(View):
     def post(self, request):
-        data = json.loads(request.body)
+        data      = json.loads(request.body)
         ownerName = Owner.objects.get(name=data["ownerName"])
         Dog.objects.create(name=data["name"], age=data["age"], owner=ownerName)
         return JsonResponse({"result": "CREATE SUCCESS"}, status=201)
@@ -24,7 +24,7 @@ class DogAdd(View):
 
 class OwnerList(View):
     def get(self, request):
-        owners = Owner.objects.all()
+        owners    = Owner.objects.all()
         ownerList = []
         for owner in owners:
             petList = []
@@ -43,7 +43,7 @@ class OwnerList(View):
 
 class DogList(View):
     def get(self, request):
-        dogs = Dog.objects.all()
+        dogs    = Dog.objects.all()
         dogList = []
         for dog in dogs:
             dogList.append({'name': dog.name})

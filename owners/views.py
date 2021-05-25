@@ -15,7 +15,7 @@ class OwnerAdd(View):
 class DogAdd(View):
     def post(self, request):
         data      = json.loads(request.body)
-        ownerName = Owner.objects.get(name=data["ownerName"])
+        ownerName = Owner.objects.get(name=data["owner"])
         Dog.objects.create(name=data["name"], age=data["age"], owner=ownerName)
         return JsonResponse({"result": "CREATE SUCCESS"}, status=201)
 
@@ -26,18 +26,22 @@ class OwnerList(View):
     def get(self, request):
         owners    = Owner.objects.all()
         ownerList = []
+
         for owner in owners:
+            tempDict          = {}
+            tempDict["name"]  = owner.name
+            tempDict["email"] = owner.email
+            tempDict["age"]   = owner.age
+
+            dogs = owner.dog_set.all()
             petList = []
-            ownerList.append({'name': owner.name})
-            ownerList.append({'email': owner.email})
-            ownerList.append({'age': owner.age})
-            dogs = Dog.objects.filter(owner__name=owner.name)
+
             for dog in dogs:
-                if owner.name == dog.owner.name:
-                    petList.append({'name': dog.name})
-                    petList.append({'age': dog.age})
-            ownerList.append({'petList': petList})
-        
+                petList.append({"name": dog.name})
+                petList.append({"age": dog.age})
+
+            tempDict["petList"] = petList
+            ownerList.append(tempDict)
 
         return JsonResponse({'OwnerList': ownerList}, status=200)
 
@@ -45,10 +49,14 @@ class DogList(View):
     def get(self, request):
         dogs    = Dog.objects.all()
         dogList = []
+
         for dog in dogs:
-            dogList.append({'name': dog.name})
-            dogList.append({'age': dog.age})
-            dogList.append({'owner': dog.owner.name})
+            tempDict          = {}
+            tempDict['name']  = dog.name
+            tempDict['age']   = dog.age
+            tempDict['owner'] = dog.owner.name
+            dogList.append(tempDict)
+
         return JsonResponse({'DogList': dogList}, status=200)
 
 

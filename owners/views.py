@@ -15,7 +15,7 @@ class OwnerAdd(View):
 class DogAdd(View):
     def post(self, request):
         data = json.loads(request.body)
-        ownerName = Owner.objects.get(name=data["ownerName"])
+        ownerName = Owner.objects.get(name=data["owner"])
         Dog.objects.create(name=data["name"], age=data["age"], owner=ownerName)
         return JsonResponse({"result": "CREATE SUCCESS"}, status=201)
 

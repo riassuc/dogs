@@ -31,7 +31,7 @@ class OwnerList(View):
             ownerList.append({'name': owner.name})
             ownerList.append({'email': owner.email})
             ownerList.append({'age': owner.age})
-            dogs = Dog.objects.filter(owner__name=owner.name)
+            dogs = Dog.objects.all()
             for dog in dogs:
                 if owner.name == dog.owner.name:
                     petList.append({'name': dog.name})
